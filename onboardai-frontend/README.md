@@ -1,29 +1,36 @@
-# onboardai-frontend
+# OnboardAI Frontend
 
-This template should help get you started developing with Vue 3 in Vite.
+A modern web application for automating the onboarding process for new developers using AI.
 
-## Recommended IDE Setup
+## Features
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
-
-## Customize configuration
-
-See [Vite Configuration Reference](https://vite.dev/config/).
+- Authentication (Login/Signup)
+- Role-based dashboards (Manager/Engineer)
+- AI-powered onboarding checklist generation
+- Progress tracking for engineers
+- Integration capabilities with Notion, Jira, GitHub, and GitLab
 
 ## Project Setup
 
 ```sh
+# Install dependencies
 npm install
-```
 
-### Compile and Hot-Reload for Development
-
-```sh
+# Start development server
 npm run dev
-```
 
-### Compile and Minify for Production
-
-```sh
+# Build for production
 npm run build
 ```
+
+## Environment Setup
+
+Create a `.env` file in the root directory:
+
+```
+VITE_API_URL=http://localhost:8080
+```
+
+## Backend Requirements
+
+Make sure the backend server is running at `http://localhost:8080`. See the backend README for setup instructions.
