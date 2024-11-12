@@ -1,10 +1,15 @@
 package main
 
 import (
+	"context"
 	"net/http"
+	"os"
+	"strings"
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
+	"github.com/joho/godotenv"
+	"github.com/sashabaranov/go-openai"
 )
 
 type User struct {
@@ -24,6 +29,12 @@ type OnboardingResponse struct {
 }
 
 func main() {
+	// Load .env file
+	if err := godotenv.Load(); err != nil {
+		// Log error but don't fail - env vars might be set another way
+		println("Error loading .env file:", err)
+	}
+
 	r := gin.Default()
 
 	// Configure CORS with specific options
@@ -92,17 +103,38 @@ func main() {
 			return
 		}
 
-		// For MVP, we'll simulate GPT-4 response
-		response := OnboardingResponse{
-			Checklist: []string{
-				"Install VS Code",
-				"Set up Git",
-				"Install Docker",
-				"Configure development environment",
-				"Clone repository",
-				"Install dependencies",
+		// Call GPT-4 API
+		client := openai.NewClient(os.Getenv("OPENAI_API_KEY"))
+		resp, err := client.CreateChatCompletion(
+			context.Background(),
+			openai.ChatCompletionRequest{
+				Model: "gpt-4",
+				Messages: []openai.ChatCompletionMessage{
+					{
+						Role:    "user",
+						Content: "Using this documentation of a codebase, create a checklist for new hired dev engineer along with a coding challenge.\n\n" + req.Documentation,
+					},
+				},
 			},
-			CodingChallenge: "Write a function that reverses a string and handles Unicode characters correctly",
+		)
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to generate onboarding"})
+			return
+		}
+
+		// Parse GPT response - assuming format: checklist items followed by coding challenge
+		gptResponse := resp.Choices[0].Message.Content
+		parts := strings.Split(gptResponse, "\nCoding Challenge:")
+
+		checklist := strings.Split(strings.TrimSpace(parts[0]), "\n")
+		codingChallenge := ""
+		if len(parts) > 1 {
+			codingChallenge = strings.TrimSpace(parts[1])
+		}
+
+		response := OnboardingResponse{
+			Checklist:       checklist,
+			CodingChallenge: codingChallenge,
 		}
 
 		onboardingData[req.EngineerEmail] = response
