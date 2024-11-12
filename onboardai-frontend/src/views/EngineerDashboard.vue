@@ -1,14 +1,8 @@
 <template>
     <div class="container mx-auto px-4 py-8">
       <div class="max-w-4xl mx-auto">
-        <div class="flex justify-between items-center mb-8">
+        <div class="mb-8">
           <h1 class="text-2xl font-bold">Engineer Dashboard</h1>
-          <button
-            @click="handleLogout"
-            class="px-4 py-2 text-sm text-red-600 border border-red-600 rounded hover:bg-red-50"
-          >
-            Logout
-          </button>
         </div>
   
         <div v-if="userStore.error" class="mb-6 p-4 bg-red-100 text-red-700 rounded">
@@ -23,10 +17,11 @@
         <template v-else>
           <Checklist
             v-if="onboardingStore.hasOnboardingData"
-            :checklist="onboardingStore.checklist"
+            :checklist="onboardingStore.checklist || []"
             :coding-challenge="onboardingStore.codingChallenge"
             :is-loading="onboardingStore.isLoading"
             :error="onboardingStore.error"
+            @toggle-item="onboardingStore.toggleItemCompletion"
           />
   
           <div 

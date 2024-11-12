@@ -1,5 +1,8 @@
 <template>
-    <form @submit.prevent="handleSubmit" class="max-w-md mx-auto p-6 bg-white rounded-lg shadow-md">
+    <form @submit.prevent="handleSubmit" class="w-full max-w-lg mx-auto p-6">
+      <div class="text-center mb-8">
+        <h1 class="text-2xl font-bold text-gray-900">Onboard AI</h1>
+      </div>
       <div v-if="userStore.error" class="mb-4 p-3 bg-red-100 text-red-700 rounded">
         {{ userStore.error }}
       </div>
@@ -103,7 +106,14 @@
       : await userStore.signup(email.value, password.value)
   
     if (success) {
-      router.push('/role-selection')
+      const role = userStore.userRole
+      if (role === 'manager') {
+        router.push('/manager-dashboard')
+      } else if (role === 'engineer') {
+        router.push('/engineer-dashboard')
+      } else {
+        router.push('/role-selection')
+      }
     }
   }
   

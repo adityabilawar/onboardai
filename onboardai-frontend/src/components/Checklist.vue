@@ -100,7 +100,9 @@
     return (completedCount.value / props.checklist.length) * 100
   })
   
+  const emit = defineEmits(['toggle-item'])
+  
   const onToggleItem = (index) => {
-    onboardingStore.toggleItemCompletion(index)
+    emit('toggle-item', index)
   }
   </script>

@@ -36,10 +36,15 @@ const router = createRouter({
   routes
 })
 
-// Simple navigation guard
+// Navigation guards
 router.beforeEach((to, from, next) => {
   const isAuthenticated = localStorage.getItem('user')
-  if (to.meta.requiresAuth && !isAuthenticated) {
+  const user = isAuthenticated ? JSON.parse(localStorage.getItem('user')) : null
+  
+  if (to.path === '/' && isAuthenticated && user?.role) {
+    // Redirect logged in users with roles to their dashboard
+    next(user.role === 'manager' ? '/manager-dashboard' : '/engineer-dashboard')
+  } else if (to.meta.requiresAuth && !isAuthenticated) {
     next('/')
   } else {
     next()

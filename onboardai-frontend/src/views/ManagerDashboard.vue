@@ -1,7 +1,31 @@
 <!-- ManagerDashboard.vue -->
 <template>
     <div class="manager-dashboard">
-      <h2>Manager Dashboard</h2>
+      <div class="flex justify-between items-center mb-6">
+        <h2>Manager Dashboard</h2>
+        <div class="relative">
+          <button 
+            @click="isDropdownOpen = !isDropdownOpen"
+            class="px-4 py-2 text-sm bg-blue-500 text-white rounded-md hover:bg-blue-600"
+          >
+            Connect with
+          </button>
+          <div 
+            v-if="isDropdownOpen" 
+            class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg z-10"
+          >
+            <a 
+              v-for="service in services" 
+              :key="service"
+              href="#"
+              @click.prevent="connectWith(service)"
+              class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+            >
+              {{ service }}
+            </a>
+          </div>
+        </div>
+      </div>
       
       <!-- Loading State -->
       <div v-if="onboardingStore.isLoading" class="loading">
@@ -42,6 +66,14 @@
   import { useOnboardingStore } from '../stores/onboarding'
   
   const onboardingStore = useOnboardingStore()
+  const isDropdownOpen = ref(false)
+  const services = ['Notion', 'Jira', 'GitHub', 'GitLab']
+
+  const connectWith = (service) => {
+    isDropdownOpen.value = false
+    // TODO: Implement connection logic
+    console.log(`Connecting with ${service}`)
+  }
   const engineerEmail = ref('')
   const documentContent = ref('')
   

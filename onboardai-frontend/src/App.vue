@@ -1,5 +1,9 @@
 <template>
-  <div class="min-h-screen bg-gray-50">
+  <div class="min-h-screen bg-gray-50 font-sans">
+    <!-- Loading bar -->
+    <div v-if="userStore.isLoading || onboardingStore.isLoading" class="fixed top-0 left-0 right-0">
+      <div class="h-1 bg-blue-500 animate-[loading_2s_ease-in-out_infinite]"></div>
+    </div>
     <!-- Navigation when user is authenticated -->
     <nav v-if="userStore.isAuthenticated" class="bg-white shadow">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

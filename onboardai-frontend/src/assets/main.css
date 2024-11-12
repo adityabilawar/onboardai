@@ -1,10 +1,45 @@
 @import './base.css';
 
+@keyframes loading {
+  0% { width: 0%; }
+  50% { width: 70%; }
+  100% { width: 100%; }
+}
+
 #app {
-  max-width: 1280px;
+  width: 100%;
   margin: 0 auto;
-  padding: 2rem;
+  padding: 1rem;
   font-weight: normal;
+}
+
+@media (min-width: 640px) {
+  #app {
+    padding: 1.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  #app {
+    padding: 2rem;
+    max-width: 1280px;
+  }
+}
+
+/* Modern form styling */
+input[type="email"],
+input[type="password"],
+input[type="text"] {
+  @apply w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all duration-200;
+}
+
+button {
+  @apply transition-all duration-200;
+}
+
+/* Card styling */
+.card {
+  @apply bg-white rounded-xl shadow-sm hover:shadow-md transition-all duration-200;
 }
 
 a,
