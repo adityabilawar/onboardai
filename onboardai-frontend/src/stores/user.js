@@ -43,7 +43,7 @@ export const useUserStore = defineStore('user', {
       }
     },
 
-    async signup(email, password) {
+    async signup(email, password, role) {
       this.isLoading = true
       this.error = null
       

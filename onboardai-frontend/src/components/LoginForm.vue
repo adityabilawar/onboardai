@@ -36,6 +36,20 @@
         >
         <p v-if="errors.password" class="mt-1 text-sm text-red-500">{{ errors.password }}</p>
       </div>
+
+      <div v-if="!isLogin" class="mb-6">
+        <label class="block text-sm font-medium text-gray-700 mb-1">Role</label>
+        <select
+          v-model="role"
+          required
+          class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          :disabled="userStore.isLoading"
+        >
+          <option value="">Select a role</option>
+          <option value="manager">Manager</option>
+          <option value="engineer">Engineer</option>
+        </select>
+      </div>
   
       <div class="flex justify-between items-center">
         <button
@@ -98,19 +112,19 @@
     return isValid
   }
   
+  const role = ref('')
+  
   const handleSubmit = async () => {
     if (!validateForm()) return
   
     const success = isLogin.value 
       ? await userStore.login(email.value, password.value)
-      : await userStore.signup(email.value, password.value)
+      : await userStore.signup(email.value, password.value, role.value)
   
     if (success) {
       const role = userStore.userRole
-      if (role === 'manager') {
-        router.push('/manager-dashboard')
-      } else if (role === 'engineer') {
-        router.push('/engineer-dashboard')
+      if (role === 'manager' || role === 'engineer') {
+        router.push(`/${role}-dashboard`)
       } else {
         router.push('/role-selection')
       }

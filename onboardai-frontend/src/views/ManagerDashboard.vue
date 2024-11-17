@@ -1,6 +1,6 @@
 <!-- ManagerDashboard.vue -->
 <template>
-    <div class="manager-dashboard">
+    <div class="manager-dashboard container mx-auto px-6 py-8">
       <div class="flex justify-between items-center mb-6">
         <h2>Manager Dashboard</h2>
         <div class="relative">
@@ -38,20 +38,29 @@
       </div>
   
       <!-- Upload Form -->
-      <form @submit.prevent="handleSubmit" v-if="!onboardingStore.isLoading">
-        <input 
-          v-model="engineerEmail" 
-          type="email" 
-          placeholder="New Hire Email" 
-          required
+      <form @submit.prevent="handleSubmit" v-if="!onboardingStore.isLoading" class="space-y-6 max-w-lg mx-auto bg-white p-6 rounded-lg shadow-sm">
+        <div class="space-y-4">
+          <input 
+            v-model="engineerEmail" 
+            type="email" 
+            placeholder="New Hire Email" 
+            required
+            class="w-full"
+          >
+          <input 
+            type="file" 
+            @change="handleFileUpload" 
+            accept=".txt"
+            required
+            class="w-full"
+          >
+        </div>
+        <button 
+          type="submit"
+          class="px-4 py-2 text-sm bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
         >
-        <input 
-          type="file" 
-          @change="handleFileUpload" 
-          accept=".txt"
-          required
-        >
-        <button type="submit">Generate Onboarding</button>
+          Generate Onboarding
+        </button>
       </form>
   
       <!-- Success State -->
